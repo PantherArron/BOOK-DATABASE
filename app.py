@@ -78,7 +78,7 @@ def add_csv():
                 price = clean_price(row[3])
                 new_book = Book(title = title, author = author, date_published = date, price = price)
                 session.add(new_book)
-        session.commit
+        session.commit()
 
 
 def app():
@@ -86,7 +86,6 @@ def app():
     while app_running:
         choice = menu()
         if choice == "1":
-            # add book
             title = input("Title: ")
             author = input("Author: ")
             date_error = True
@@ -101,14 +100,15 @@ def app():
                 price_clean = clean_price(price)
                 if type(price_clean) == int:
                     price_error = False
-            new_book = Book(title = title, author = author, date_published = date, price = price)
+            new_book = Book(title = title, author = author, date_published = date_clean, price = price_clean)
             session.add(new_book)
-            session.commit
-            print("Book added to datebase!")
+            session.commit()
+            print("Book added to database!")
             time.sleep(2)
         elif choice == "2":
-            # print all books in database
-            pass
+            for book in session.query(Book):
+                print(f"{book.id} | {book.title} | {book.author}")
+            input("\nPress enter to return to the main menu.")    
         elif choice == "3":
             # search for a book
             pass
