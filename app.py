@@ -202,12 +202,24 @@ def app():
                 session.delete(the_book)
                 session.commit()
                 time.sleep(2)
+                print(f"Book {id_choice} deleted.")
             else:
                 print("Returning to Main Menu.")
                 time.sleep(2)
         elif choice == "4":
             # book analysis
-            pass
+            oldest_book = session.query(Book).order_by(Book.date_published).first()
+            newest_book = session.query(Book).order_by(Book.date_published.desc()).first()
+            total_books = session.query(Book).count()
+            python_books = session.query(Book).filter(Book.title.like("%Python%")).count()
+            print(f"""
+                  \n****** BOOK ANALSYS ******
+                  \rTotal books: {total_books}.
+                  \rTotal Python books: {python_books}.
+                  \rOldest book: {oldest_book.title}.
+                  \rNewest book: {newest_book.title}.
+                  \r**************************""")
+            input("\nPress enter to return to the main menu.")
         else:
             print("Thank you for your patronage.")
             app_running = False
